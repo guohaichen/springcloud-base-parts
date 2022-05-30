@@ -14,4 +14,4 @@ logging:
   level:
     com.chen: debug
   pattern:
-    dateformat: MM-dd HH:mm:ss:SSS
+    dateformat: HH:mm:ss:SSS
