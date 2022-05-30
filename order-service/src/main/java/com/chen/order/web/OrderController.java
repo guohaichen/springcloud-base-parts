@@ -17,13 +17,14 @@ import javax.annotation.Resource;
 @RequestMapping("order")
 public class OrderController {
 
-   @Autowired
-   private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
-   @Resource
-   private RestTemplate restTemplate;
+    @Resource
+    private RestTemplate restTemplate;
+
     /**
-     *这里将user和order拆分成了两个微服务，低耦合
+     * 这里将user和order拆分成了两个微服务，低耦合
      * 订单中有user_id，user暂时为空，需要调用查询user的接口，得到user，返回给order中的user
      * 如果不使用组件，则使用restTemplate进行调用；
      */
@@ -41,12 +42,11 @@ public class OrderController {
          *  有多个user-service实例地址，order-service调用时该如何选择？
          *  order-service如何得知某个user-service实例是否依然健康，是不是已经宕机？
          */
-        User user = restTemplate.getForObject("http://localhost:8081/user/" + order.getUserId(), User.class);
-
+        //User user = restTemplate.getForObject("http://localhost:8081/user/" + order.getUserId(), User.class);
+        //调用已在eureka注册的服务，
+        User user = restTemplate.getForObject("http://user-service/user/" + order.getUserId(), User.class);
         order.setUser(user);
 
         return order;
     }
-
-
 }
