@@ -30,12 +30,23 @@ public class OrderController {
     @GetMapping("{orderId}")
     public Order queryOrderByUserId(@PathVariable("orderId") Long orderId) {
         // 根据id查询订单并返回
-        Order order = orderService.queryOrderById(orderId);
+        return getOrderByRestTemplate(orderId);
+    }
 
+    //restTemplate调用http请求
+    private Order getOrderByRestTemplate(Long orderId) {
+        Order order = orderService.queryOrderById(orderId);
+        /** 使用restTemplate调用远程服务时可能会遇到的问题：
+         *  order-service在发起远程调用的时候，该如何得知user-service实例的ip地址和端口？
+         *  有多个user-service实例地址，order-service调用时该如何选择？
+         *  order-service如何得知某个user-service实例是否依然健康，是不是已经宕机？
+         */
         User user = restTemplate.getForObject("http://localhost:8081/user/" + order.getUserId(), User.class);
 
         order.setUser(user);
 
         return order;
     }
+
+
 }
