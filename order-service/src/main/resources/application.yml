@@ -9,6 +9,11 @@ spring:
   #服务注册名称
   application:
     name: order-service
+    #注册消费者
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:
@@ -18,8 +23,3 @@ logging:
     com.chen: debug
   pattern:
     dateformat: HH:mm:ss:SSS
-#注册消费者
-eureka:
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:10086/eureka
