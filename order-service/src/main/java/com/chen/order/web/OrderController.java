@@ -1,5 +1,6 @@
 package com.chen.order.web;
 
+import com.chen.order.feignClients.UserClients;
 import com.chen.order.pojo.Order;
 import com.chen.order.pojo.User;
 import com.chen.order.service.OrderService;
@@ -23,6 +24,9 @@ public class OrderController {
     @Resource
     private RestTemplate restTemplate;
 
+    @Autowired
+    private UserClients userClients;
+
     /**
      * 这里将user和order拆分成了两个微服务，低耦合
      * 订单中有user_id，user暂时为空，需要调用查询user的接口，得到user，返回给order中的user
@@ -31,8 +35,29 @@ public class OrderController {
     @GetMapping("{orderId}")
     public Order queryOrderByUserId(@PathVariable("orderId") Long orderId) {
         // 根据id查询订单并返回
-        return getOrderByRestTemplate(orderId);
+//        return getOrderByRestTemplate(orderId);
+        //通过openFeign调用远程服务
+        return getOrderByOpenFeign(orderId);
     }
+
+
+
+    private Order getOrderByOpenFeign(Long orderId){
+        Order order = orderService.queryOrderById(orderId);
+        //获取用户id，给接口远程调用，得到User
+        Long userId = order.getUserId();
+
+        // openFeign方法调用，重点！！！！！！！！！！！！！！！！！！！！！
+        User user = userClients.findById(userId);
+
+        order.setUser(user);
+        return order;
+
+    }
+
+
+
+
 
     //restTemplate调用http请求
     private Order getOrderByRestTemplate(Long orderId) {
