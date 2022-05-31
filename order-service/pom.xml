@@ -11,7 +11,14 @@
 
     <artifactId>order-service</artifactId>
 
+
     <dependencies>
+        <!--依赖公共接口feign-common-api-->
+        <dependency>
+            <groupId>com.chen.cloud.demo</groupId>
+            <artifactId>feign-common-api</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

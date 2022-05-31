@@ -1,5 +1,6 @@
 package com.chen.order.pojo;
 
+import com.chen.api.pojo.User;
 import lombok.Data;
 
 @Data

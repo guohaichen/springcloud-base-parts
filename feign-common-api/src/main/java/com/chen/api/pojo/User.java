@@ -1,4 +1,4 @@
-package com.chen.order.pojo;
+package com.chen.api.pojo;
 
 import lombok.Data;
 

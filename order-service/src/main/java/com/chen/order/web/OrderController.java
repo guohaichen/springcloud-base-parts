@@ -1,8 +1,8 @@
 package com.chen.order.web;
 
-import com.chen.order.feignClients.UserClients;
+import com.chen.api.feignClients.UserClients;
+import com.chen.api.pojo.User;
 import com.chen.order.pojo.Order;
-import com.chen.order.pojo.User;
 import com.chen.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,10 +54,6 @@ public class OrderController {
         return order;
 
     }
-
-
-
-
 
     //restTemplate调用http请求
     private Order getOrderByRestTemplate(Long orderId) {
