@@ -12,7 +12,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        #nginx80端口代理到 到 nacos_cluster 8843/8845/8847
+        server-addr: 127.0.0.1:80
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:
