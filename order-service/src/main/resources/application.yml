@@ -28,6 +28,11 @@ logging:
 
 #feign性能优化，URLConnection：默认实现，不支持连接池，可以更改为Apache HttpClient/OKHttp,这两者支持连接池
     #优化二：日志级别更改为Basic
+ribbon:
+  eager-load:
+    enabled: true # 开启饥饿加载,让请求加载更快
+    clients: # 指定饥饿加载的服务名称
+      - user-service
 feign:
   client:
     config:
