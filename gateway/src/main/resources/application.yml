@@ -3,20 +3,20 @@ server:
 
 spring:
   application:
-    name: gateway #·şÎñÃû³Æ
+    name: gateway #æœåŠ¡åç§°
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848 #nacosµ¥»úµØÖ·
+        server-addr: localhost:8848 #nacoså•æœºåœ°å€
     gateway:
       routes:
-        #Íø¹ØÂ·ÓÉÅäÖÃ
-        - id: user-service-rule #Â·ÓÉid£¬×Ô¶¨Òå£¬Î¨Ò»¼´¿É
-          uri: lb://user-service #Â·ÓÉµÄÄ¿±êµØÖ·£¬lb = loadBalance ºóÃæ¸ú·şÎñÃû³Æ
-          predicates: #Â·ÓÉ¶ÏÑÔ£¬
-          - Path=/user/** #Â·¾¶Æ¥Åä£¬/user/¹æÔò
+        #ç½‘å…³è·¯ç”±é…ç½®
+        - id: user-service-rule #è·¯ç”±idï¼Œè‡ªå®šä¹‰ï¼Œå”¯ä¸€å³å¯
+          uri: lb://user-service #è·¯ç”±çš„ç›®æ ‡åœ°å€ï¼Œlb = loadBalance åé¢è·ŸæœåŠ¡åç§°
+          predicates: #è·¯ç”±æ–­è¨€ï¼Œ
+            - Path=/user/** #è·¯å¾„åŒ¹é…ï¼Œ/user/è§„åˆ™
 
         - id: order-service-rule
           uri: lb://order-service
           predicates:
-          - Path=/order/**
+            - Path=/order/**
