@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        #配置中心配置文件的后缀名
+        file-extension: yaml
+

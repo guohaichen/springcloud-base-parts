@@ -15,7 +15,10 @@ spring:
       discovery:
         #nginx80端口代理到 到 nacos_cluster 8843/8845/8847
         #server-addr: localhost:80
-        server-addr: localhost:8848 #暂时改为单机nacos，集群内存扛不住啊。
+        server-addr: localhost:8848 #暂时改为单机nacos
+        cluster-name: HZ
+        #环境隔离: nacos命名空间id，不同namespace，相互隔离，不能访问其他namespace实例
+#        namespace: 3182f621-4c39-4cec-8f26-b831de368b8f
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:
@@ -25,7 +28,9 @@ logging:
     com.chen: debug
   pattern:
     dateformat: HH:mm:ss:SSS
-
+user-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule  # 负载均衡规则
 #feign性能优化，URLConnection：默认实现，不支持连接池，可以更改为Apache HttpClient/OKHttp,这两者支持连接池
     #优化二：日志级别更改为Basic
 ribbon:

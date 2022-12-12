@@ -6,15 +6,18 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-    #在注册中心的应用名称
-  application:
-    name: user-service
+    #在注册中心的应用名称 写在bootstrap中了，
+#  application:
+#    name: user-service
   cloud:
     nacos:
       discovery:
         #nginx80端口代理到 到 nacos_cluster 8843/8845/8847
         #server-addr: 127.0.0.1:80
-        server-addr: localhost:8848 #暂时改为单机nacos，集群内存扛不住啊。
+        #server-addr: localhost:8848 #暂时改为单机nacos 写在bootstrap中了，
+
+        #配置nacos集群
+        cluster-name: SH
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:
