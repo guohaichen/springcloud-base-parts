@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 /* 开启openfeign客户端,同时将api接口中的bean交由spring管理，否则会找不到这个bean，
 因为这里application包扫描式com.chen.order.mapper，扫描不到feign-common-api中的UserClients
-或者 @EnableFeignClients(basePackages = "com.chen.api.feignClients") 全量导入 ，下面是俺需导入*/
+或者 @EnableFeignClients(basePackages = "com.chen.api.feignClients") 全量导入 ，下面是按需导入*/
 @EnableFeignClients(clients = {UserClients.class})
 public class OrderApplication {
 
