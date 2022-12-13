@@ -28,7 +28,5 @@ public class ConfigTestByRefreshScope {
         log.info("chen's gender is {}",gender);
         return gender;
     }
-
-
 }
 

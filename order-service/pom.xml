@@ -42,7 +42,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!--openfeign的优化：更改连接池-->
+        <!--openfeign的优化：更改连接池，引入httpClient的依赖-->
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>

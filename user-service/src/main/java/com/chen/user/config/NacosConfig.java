@@ -15,6 +15,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "chen")
 public class NacosConfig {
     private String Gender;
-
     private String lastName;
 }

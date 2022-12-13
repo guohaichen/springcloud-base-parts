@@ -4,17 +4,16 @@ import com.chen.api.feignClients.UserClients;
 import com.chen.api.pojo.User;
 import com.chen.order.pojo.Order;
 import com.chen.order.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
 
 @RestController
+@Slf4j
 @RequestMapping("order")
 public class OrderController {
 
@@ -33,10 +32,11 @@ public class OrderController {
      * 如果不使用组件，则使用restTemplate进行调用；
      */
     @GetMapping("{orderId}")
-    public Order queryOrderByUserId(@PathVariable("orderId") Long orderId) {
+    public Order queryOrderByUserId(@PathVariable("orderId") Long orderId,@RequestHeader(value = "Token",required = false) String token) {
         // 根据id查询订单并返回
 //        return getOrderByRestTemplate(orderId);
         //通过openFeign调用远程服务
+        log.info("get token from Gateway , is {}",token);
         return getOrderByOpenFeign(orderId);
     }
 
@@ -64,7 +64,7 @@ public class OrderController {
          *  order-service如何得知某个user-service实例是否依然健康，是不是已经宕机？
          */
         //User user = restTemplate.getForObject("http://localhost:8081/user/" + order.getUserId(), User.class);
-        //调用已在eureka注册的服务，
+        //调用已在nacos注册的服务，
         User user = restTemplate.getForObject("http://user-service/user/" + order.getUserId(), User.class);
         order.setUser(user);
 

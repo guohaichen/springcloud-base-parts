@@ -38,6 +38,7 @@ ribbon:
     enabled: true # 开启饥饿加载,让请求加载更快
     clients: # 指定饥饿加载的服务名称
       - user-service
+#feign日志
 feign:
   client:
     config:
