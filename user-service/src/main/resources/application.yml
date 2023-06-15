@@ -27,3 +27,5 @@ logging:
     com.chen: debug
   pattern:
     dateformat: HH:mm:ss:SSS
+chen:
+  gender: male
