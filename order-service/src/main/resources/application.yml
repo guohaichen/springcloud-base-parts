@@ -6,9 +6,6 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-  #服务注册名称
-  application:
-    name: order-service
     #注册消费者
   cloud:
     nacos:

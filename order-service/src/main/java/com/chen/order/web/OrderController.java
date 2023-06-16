@@ -6,6 +6,8 @@ import com.chen.order.pojo.Order;
 import com.chen.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 
 @RestController
 @Slf4j
+@RefreshScope
 @RequestMapping("order")
 public class OrderController {
 
@@ -69,5 +72,15 @@ public class OrderController {
         order.setUser(user);
 
         return order;
+    }
+
+
+    @Value("${config.name}")
+    private String configName;
+
+    @GetMapping("/name")
+    public String getNameFromNacosConfig(){
+        log.info("从nacos配置中心读取到配置值为:{}",configName);
+        return configName;
     }
 }

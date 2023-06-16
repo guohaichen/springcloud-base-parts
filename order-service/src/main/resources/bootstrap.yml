@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: order-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        #配置中心配置文件的后缀名
+        file-extension: yaml

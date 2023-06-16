@@ -14,7 +14,7 @@ spring:
         - id: user-service-rule #路由id，自定义，唯一即可
           uri: lb://user-service #路由的目标地址，lb = loadBalance 后面跟服务名称
           predicates: #路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/user/** #路径匹配，，只要以/user/开头就符合规则
+            - Path=/user/**,/config/** #路径匹配，，只要以/user/开头就符合规则
         #例如 浏览器访问localhost:10010/user/101 就可以按照localhost:8081或者8082或者8083/user/{id}这个规则访问
 
         - id: order-service-rule
