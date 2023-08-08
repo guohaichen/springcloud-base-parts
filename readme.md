@@ -8,3 +8,7 @@
 ### 程序访问
 - 可单独访问user-service,order-service;
 - 通过网关接口localhost:10010/.../?auth=admin 访问order-service/user-service。这里要带参数auth=admin因为gateway配置了全局过滤器;
+
+### 服务改造:
+
+使用spring security + oauth2.0改造服务，在gateway层面结合spring security+oauth2.0做登录认证；

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: gateway #服务名称
+    name: sys-gateway #服务名称
   cloud:
     nacos:
       discovery:
@@ -21,6 +21,10 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/order/**
+        - id: security-auth
+          uri: lb://sys-security-oauth
+          predicates:
+            - Path=/auth/**
       #添加一个过滤器(默认过滤器，上面两个网关路由都会触发这个过滤器，调用通过order-service——————>user-service，order会触发，user-service不会触发)，添加请求头
       default-filters:
         - AddRequestHeader=Token, 1299117865

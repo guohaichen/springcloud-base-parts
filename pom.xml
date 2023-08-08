@@ -12,7 +12,8 @@
         <module>order-service</module>
         <module>eureka-server</module>
         <module>feign-common-api</module>
-        <module>gateway</module>
+        <module>sys-gateway</module>
+        <module>sys-security-oauth</module>
     </modules>
 
     <packaging>pom</packaging>
