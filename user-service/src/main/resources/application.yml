@@ -18,6 +18,10 @@ spring:
 
         #配置nacos集群
         cluster-name: SH
+    #sentinel的配置，指定dashboard端口
+    sentinel:
+      transport:
+        dashboard: localhost:8080
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:
