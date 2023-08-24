@@ -12,3 +12,6 @@
 ### 服务改造:
 
 使用spring security + oauth2.0改造服务，在gateway层面结合spring security+oauth2.0做登录认证；
+
+
+

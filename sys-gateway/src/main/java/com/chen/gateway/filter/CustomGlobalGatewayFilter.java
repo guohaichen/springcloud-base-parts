@@ -16,17 +16,15 @@ import reactor.core.publisher.Mono;
  * @create 2022-12-13
  * gateway定义全局过滤器 GlobalFilter
  */
-@Component
+//@Component
 @Slf4j
 public class CustomGlobalGatewayFilter implements GlobalFilter {
 
-    private final String AUTHORIZATION_TOKEN = "Authorization";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         //拿到请求中的参数auth,这里是uri路径的请求， ?auth=admin
         ServerHttpRequest request = exchange.getRequest();
-        HttpHeaders headers = request.getHeaders();
         MultiValueMap<String, String> requestParam = request.getQueryParams();
         String auth = requestParam.getFirst("auth");
         //判断请求中是否有auth=admin
