@@ -1,7 +1,9 @@
 package com.chen.cloud.auth.filter;
 
+import com.chen.cloud.auth.entity.User;
 import com.chen.cloud.auth.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -39,15 +41,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
         //todo 先简化，这里token的值直接传username, 正确应该是对token中取出username,进行校验，
-        String username = httpServletRequest.getHeader("token");
-        log.info("token filters username : {} ", username);
-
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        log.info("userDetails:{},{}",userDetails.getUsername(),userDetails.getPassword());
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
+        String token = httpServletRequest.getHeader("token");
+        if (StringUtils.isNotEmpty(token)) {
+            log.info("token filters username : {} ", token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername("root");
+            log.info("userDetails:{},{}", userDetails.getUsername(), userDetails.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("root", "cgh123456");
+//        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-
     }
 }

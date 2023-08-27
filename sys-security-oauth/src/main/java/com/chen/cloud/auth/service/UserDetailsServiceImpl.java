@@ -1,6 +1,10 @@
 package com.chen.cloud.auth.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,11 +21,15 @@ import java.util.ArrayList;
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //返回用户信息和权限集合
-
-        log.info("userDetailsService 's username :{}",username);
-        return new User(username,"cgh123456",new ArrayList<>());
+        log.info("userDetailsService 's username :{}", username);
+        String password = "cgh123456";
+        return new User(username, password, new ArrayList<>());
     }
 }
