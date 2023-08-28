@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud-base-parts</artifactId>
-        <groupId>com.chen.cloud.demo</groupId>
+        <groupId>com.chen.cloud</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>

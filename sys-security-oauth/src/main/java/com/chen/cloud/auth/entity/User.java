@@ -20,6 +20,8 @@ public class User implements UserDetails {
 
     private String password;
 
+    private String phone;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

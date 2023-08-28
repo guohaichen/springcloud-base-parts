@@ -1,4 +1,4 @@
-package com.chen.cloud.auth.controller;
+package com.chen.cloud.auth.handler;
 
 import com.chen.cloud.auth.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
