@@ -8,11 +8,13 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -24,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author cgh
@@ -33,31 +36,30 @@ import java.io.IOException;
 @Slf4j
 @Configuration
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
+
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    RedisTemplate redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
+
         String token = httpServletRequest.getHeader("token");
         if (StringUtils.isNotEmpty(token)) {
-            log.info("token filters username : {} ", token);
-//            UserDetails userDetails = userDetailsService.loadUserByUsername("root");
             //验证token成功
-            String username;
+            String phone;
             try {
-                username = JwtUtils.validateJWT(token).getSubject();
+                phone = JwtUtils.validateJWT(token).getClaim("phone").toString();
+                log.info("phone :{}",phone);
+                //redis取出user
+                User user = (User) redisTemplate.opsForValue().get("login:user:" + phone);
+                log.info("user from redis :{}", user);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch (Exception e) {
                 throw new RuntimeException("非法token" + e.getMessage());
             }
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication.getName().equals(username)) {
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
-            }
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//            log.info("userDetails:{},{}", userDetails.getUsername(), userDetails.getPassword());
-//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
-//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

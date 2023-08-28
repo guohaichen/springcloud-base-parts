@@ -1,5 +1,6 @@
 package com.chen.cloud.auth.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,14 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
+
+
+    private Integer id;
     private String username;
 
     private String password;
 
-    private String phone;
+    private String phonenumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -50,8 +54,10 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", phone='" + phonenumber + '\'' +
                 '}';
     }
 }

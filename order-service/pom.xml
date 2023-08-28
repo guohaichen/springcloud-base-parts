@@ -15,7 +15,7 @@
     <dependencies>
         <!--依赖公共接口feign-common-api-->
         <dependency>
-            <groupId>com.chen.cloud.demo</groupId>
+            <groupId>com.chen.cloud</groupId>
             <artifactId>feign-common-api</artifactId>
             <version>1.0</version>
         </dependency>
