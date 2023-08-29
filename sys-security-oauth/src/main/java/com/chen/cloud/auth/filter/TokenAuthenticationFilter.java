@@ -43,16 +43,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-
         String token = httpServletRequest.getHeader("token");
         if (StringUtils.isNotEmpty(token)) {
-            //验证token成功
-            String phone;
             try {
-                phone = JwtUtils.validateJWT(token).getClaim("phone").toString();
-                log.info("phone :{}",phone);
+                //无异常 验证token成功
+                String phone = JwtUtils.validateJWT(token).getClaim("phone").asString();
+                String userKey = "login:user:" + phone;
                 //redis取出user
-                User user = (User) redisTemplate.opsForValue().get("login:user:" + phone);
+                User user = (User) redisTemplate.opsForValue().get(userKey);
                 log.info("user from redis :{}", user);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

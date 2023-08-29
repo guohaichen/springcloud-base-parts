@@ -27,7 +27,7 @@ public class LoginController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    RedisTemplate redisTemplate;
+    RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/login")
     public ResultResponse<?> userLogin(@RequestBody User loginUser) {
@@ -43,7 +43,8 @@ public class LoginController {
                 log.info("user:{}", user);
                 //登录用户存入redis
                 String loginKey = "login:user:" + user.getPhonenumber();
-                redisTemplate.opsForValue().set(loginKey,user);
+                log.info("{}", loginKey);
+                redisTemplate.opsForValue().set(loginKey, user);
 
                 return ResultResponse.OK("success", jwtToken);
             }

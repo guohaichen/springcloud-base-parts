@@ -21,5 +21,7 @@ public class AuthEntryPoint implements AuthenticationEntryPoint  {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
         log.info("登录失败:{}",authException.getMessage());
+        //todo 全局异常处理器 处理authException，做响应
+        throw authException;
     }
 }
