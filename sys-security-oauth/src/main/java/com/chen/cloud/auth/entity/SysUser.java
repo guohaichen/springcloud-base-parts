@@ -1,6 +1,5 @@
 package com.chen.cloud.auth.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author cgh
@@ -18,19 +18,22 @@ import java.util.Collection;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
-
+public class SysUser implements UserDetails {
 
     private Integer id;
     private String username;
-
     private String password;
-
     private String phonenumber;
-
+    private List<GrantedAuthority> permissions;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return permissions;
+    }
+
+    public SysUser(String username, String password, List<GrantedAuthority> permissions) {
+        this.username = username;
+        this.password = password;
+        this.permissions = permissions;
     }
 
     @Override

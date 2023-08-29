@@ -2,17 +2,22 @@ package com.chen.cloud.auth.controller;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.chen.cloud.auth.ResultResponse;
-import com.chen.cloud.auth.entity.User;
+import com.chen.cloud.auth.entity.SysUser;
 import com.chen.cloud.auth.mapper.AuthUserMapper;
 import com.chen.cloud.auth.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author cgh
@@ -30,21 +35,22 @@ public class LoginController {
     RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/login")
-    public ResultResponse<?> userLogin(@RequestBody User loginUser) {
+    public ResultResponse<?> userLogin(@RequestBody SysUser loginUser) {
         assert StringUtils.isNotBlank(loginUser.getUsername());
         //根据用户名 从数据库查user做校验
-        User user = authUserMapper.queryUser(loginUser.getUsername());
-        if (user != null && StringUtils.isNotBlank(user.getPassword()) && StringUtils.isNotBlank(loginUser.getPassword())) {
-            if (user.getPassword().equals(loginUser.getPassword())) {
-                String jwtToken = JwtUtils.createJWT(user.getUsername(), user.getPhonenumber());
+        SysUser sysUser = authUserMapper.queryUser(loginUser.getUsername());
+        if (sysUser != null && StringUtils.isNotBlank(sysUser.getPassword()) && StringUtils.isNotBlank(sysUser.getPassword())) {
+            if (sysUser.getPassword().equals(loginUser.getPassword())) {
+                String jwtToken = JwtUtils.createJWT(sysUser.getUsername(), sysUser.getPhonenumber());
+                List<GrantedAuthority> authorizes = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
                 // security authenticate
-                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(sysUser.getUsername(), sysUser.getPassword(),authorizes);
                 authenticationManager.authenticate(token);
-                log.info("user:{}", user);
+                log.info("user:{}", sysUser);
                 //登录用户存入redis
-                String loginKey = "login:user:" + user.getPhonenumber();
+                String loginKey = "login:user:" + sysUser.getPhonenumber();
                 log.info("{}", loginKey);
-                redisTemplate.opsForValue().set(loginKey, user);
+                redisTemplate.opsForValue().set(loginKey, sysUser);
 
                 return ResultResponse.OK("success", jwtToken);
             }
@@ -69,8 +75,9 @@ public class LoginController {
     @Autowired
     AuthUserMapper authUserMapper;
 
-    @GetMapping("/userList")
-    public ResultResponse<User> getUserList() {
+    @GetMapping("/user")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResultResponse<SysUser> getUserList() {
         return ResultResponse.OK("查询成功!", authUserMapper.queryUser("cgh"));
     }
 }

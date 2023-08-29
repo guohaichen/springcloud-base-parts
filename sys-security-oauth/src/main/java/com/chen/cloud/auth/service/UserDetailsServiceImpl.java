@@ -1,15 +1,18 @@
 package com.chen.cloud.auth.service;
 
+import com.chen.cloud.auth.entity.SysUser;
+import com.chen.cloud.auth.mapper.AuthUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author cgh
@@ -21,13 +24,14 @@ import java.util.ArrayList;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthUserMapper authUserMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //返回用户信息和权限集合
-        log.info("userDetailsService 's username :{}", username);
-        String password = "cgh123456";
-        return new User(username, password, new ArrayList<>());
+        SysUser sysUser = authUserMapper.queryUser(username);
+        log.info("loadUserByUsername,username :{}, password:{}", username, sysUser.getPassword());
+        List<GrantedAuthority> authorizes = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+        return new User(username, sysUser.getPassword(), authorizes);
     }
 }
