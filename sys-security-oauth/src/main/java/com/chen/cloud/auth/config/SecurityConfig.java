@@ -1,7 +1,8 @@
 package com.chen.cloud.auth.config;
 
 import com.chen.cloud.auth.filter.TokenAuthenticationFilter;
-import com.chen.cloud.auth.handler.AuthEntryPoint;
+import com.chen.cloud.auth.handler.AccessDeniedHandlerImpl;
+import com.chen.cloud.auth.handler.AuthenticationEntryPointImpl;
 import com.chen.cloud.auth.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -30,7 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private TokenAuthenticationFilter tokenFilter;
 
     @Autowired
-    private AuthEntryPoint entryPoint;
+    private AuthenticationEntryPointImpl authenticationEntryPoint;
+
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandler;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -54,7 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .exceptionHandling().authenticationEntryPoint(entryPoint)
+                //认证授权失败异常处理器
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 //设置url授权
                 .authorizeRequests()

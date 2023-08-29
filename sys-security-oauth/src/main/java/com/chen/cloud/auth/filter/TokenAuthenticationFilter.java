@@ -44,7 +44,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 //redis取出user
                 SysUser sysUser = (SysUser) redisTemplate.opsForValue().get(userKey);
                 log.info("user from redis :{}", sysUser);
-                List<GrantedAuthority> authorizes = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+                List<GrantedAuthority> authorizes = AuthorityUtils.commaSeparatedStringToAuthorityList("admiin");
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(sysUser, null, authorizes);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch (Exception e) {
