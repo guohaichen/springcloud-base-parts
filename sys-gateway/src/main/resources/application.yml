@@ -1,6 +1,5 @@
 server:
   port: 10010
-
 spring:
   application:
     name: sys-gateway #服务名称
@@ -26,5 +25,5 @@ spring:
           predicates:
             - Path=/auth/**
       #添加一个过滤器(默认过滤器，上面两个网关路由都会触发这个过滤器，调用通过order-service——————>user-service，order会触发，user-service不会触发)，添加请求头
-      default-filters:
-        - AddRequestHeader=Token, 1299117865
+#      default-filters:
+#        - AddRequestHeader=Token, 1299117865
