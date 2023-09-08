@@ -22,6 +22,8 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:8080
+      #关闭sentinel懒加载
+      eager: false
 mybatis:
   type-aliases-package: com.chen.user.pojo
   configuration:

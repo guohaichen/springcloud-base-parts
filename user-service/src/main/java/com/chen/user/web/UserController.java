@@ -16,13 +16,12 @@ public class UserController {
 
     /**
      * 路径： /user/110
-     *
      * @param id 用户id
      * @return 用户
      */
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id,@RequestHeader(value = "Token",required = false) String token) {
-        log.info("从Gateway的请求头中获取到的token为：{}",token);
+    public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "token", required = false) String token) {
+        log.info("user-service filter token from gateway:{}", token);
         return userService.queryById(id);
     }
 }
