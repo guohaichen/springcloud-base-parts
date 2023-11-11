@@ -1,4 +1,4 @@
-### nacos java-spi
+### nacos java-sdk
 需要引入nacos-client依赖
 ```xml
 <dependency>
@@ -23,7 +23,7 @@ public String getConfig(String dataId, String group, long timeoutMs) throws Naco
 | group   | string   | 配置分组                                 |
 | timeout | long     | 读取配置超时时间，单位 ms，推荐值 3000。 |
 
-🔴配置管理提供了 ConfigService 接口实现配置的查询，更新，创建，监听配置，删除监听配置 SPI；
+🔴配置管理提供了**`ConfigService`** 接口实现配置的查询，更新，创建，监听配置，删除监听配置 SDK；代码示例：
 
 ```java
 public static final String dataId = "nacos-dev-config";
@@ -71,5 +71,37 @@ configService.publishConfig(String dataId, String group, String content);
 
 ```java
 lconfigService.removeConfig(String dataId, String group);
+```
+
+#### 服务发现
+
+🔴服务发现也是同样提供了 `NamingService` 接口实现对服务的 注册实例，查询实例，注销实例，添加实例监听事件，取消实例监听事件；
+
+##### 注册实例
+
+```java
+void registerInstance( ) throws NacosException;
+```
+
+##### 注销实例
+
+```java
+void deregisterInstance() throws NacosException;
+```
+
+##### 获取实例
+
+```java
+List<Instance> getAllInstances( ) throws NacosException;
+```
+
+##### 监听服务
+
+> 监听服务下的实例变化列表；
+
+```java
+void subscribe(String serviceName, EventListener listener) throws NacosException;
+//取消监听服务
+void unsubscribe(String serviceName, EventListener listener) throws NacosException;
 ```
 

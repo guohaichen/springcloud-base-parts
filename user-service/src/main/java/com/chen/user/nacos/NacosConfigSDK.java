@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
 /**
  * nacos java-spi 配置中心 练习
  */
-public class NacosConfigSPI {
+public class NacosConfigSDK {
     public static final String dataId = "nacos-dev-config";
     public static final String group = "dev";
 
